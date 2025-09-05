@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xalqaro Islomshunoslik Akademiyasi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2E8B57, #3CB371);
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(46, 139, 87, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: rotate 3s linear infinite;
+        }
+
+        .logo-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 1;
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            line-height: 1.4;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #2E8B57, #3CB371);
+            box-shadow: 0 8px 20px rgba(46, 139, 87, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 12px 30px rgba(46, 139, 87, 0.4);
+        }
+
+        .btn-small {
+            padding: 12px 20px;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .field-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .field-btn:hover {
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .student-btn {
+            background: #95a5a6;
+            padding: 15px 20px;
+            margin: 8px 0;
+            border-radius: 15px;
+            font-size: 15px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .student-btn.present {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+        }
+
+        .student-btn.absent {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        .student-btn.excused {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+        }
+
+        .status-selector {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-selector.active {
+            display: block;
+        }
+
+        .status-btn {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .status-btn.present {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .status-btn.absent {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .status-btn.excused {
+            background: #f39c12;
+            color: white;
+        }
+
+        .file-input {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .file-input:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.1);
+        }
+
+        .file-input input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+
+        .date-input {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            border: 2px solid #667eea;
+        }
+
+        .date-input input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            background: white;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #2c3e50;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .date-input label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+        }
+
+        .save-btn:hover {
+            box-shadow: 0 12px 30px rgba(39, 174, 96, 0.4);
+        }
+
+        .save-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .info-panel {
+            background: rgba(46, 139, 87, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-panel p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+                max-height: 85vh;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-image {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-icon {
+                font-size: 40px;
+            }
+            
+            .title {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
+            
+            .btn {
+                padding: 16px 25px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page -->
+    <div class="page active" id="mainPage">
+        <div class="container">
+            <div class="logo">
+                <img src="image.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">🕌</div>
+            </div>
+            <h1 class="title">Xalqaro islomshunoslik akademiyasi Magistrlari</h1>
+            <div class="buttons-container">
+                <button class="btn" onclick="goToSpecialization('attendance')">Davomat nazorati</button>
+                <button class="btn btn-secondary" onclick="goToSpecialization('fileUpload')">Fayl yuklash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialization Selection Page -->
+    <div class="page" id="specializationPage">
+        <button class="back-btn" onclick="goToMain()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">📚</div>
+            </div>
+            <h1 class="title">Mutaxasislik bosqichingizni tanlang</h1>
+            <div class="buttons-container">
+                <button class="btn" onclick="selectSpecialization('first')">Bakalavr</button>
+                <button class="btn btn-secondary" onclick="selectSpecialization('second')">Magistr</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Selection Page (for attendance) -->
+    <div class="page" id="dateSelectionPage">
+        <button class="back-btn" onclick="goToSpecialization()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">📅</div>
+            </div>
+            <h1 class="title">Davomat sanasini tanlang</h1>
+            <div class="info-panel">
+                <p><strong>Mutaxasislik:</strong> <span id="selectedSpecializationDisplay"></span></p>
+            </div>
+            <div class="date-input">
+                <label for="attendanceDate">Sana:</label>
+                <input type="date" id="attendanceDate" required>
+            </div>
+            <div class="buttons-container">
+                <button class="btn" onclick="goToFieldSelectionFromDate()" id="continueBtn" disabled>Davom etish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Field Selection Page (for attendance) -->
+    <div class="page" id="fieldSelectionPage">
+        <button class="back-btn" onclick="goToDateSelection()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">🎓</div>
+            </div>
+            <h1 class="title">Yo'nalishingizni tanlang</h1>
+            <div class="info-panel">
+                <p><strong>Mutaxasislik:</strong> <span id="fieldPageSpecializationDisplay"></span></p>
+                <p><strong>Sana:</strong> <span id="fieldPageDateDisplay"></span></p>
+            </div>
+            <div class="buttons-container" id="fieldsContainer">
+                <!-- Fields will be populated from JSON -->
+            </div>
+        </div>
+    </div>
+
+    <!-- File Type Selection Page -->
+    <div class="page" id="fileTypeSelectionPage">
+        <button class="back-btn" onclick="goToSpecialization()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">📁</div>
+            </div>
+            <h1 class="title">Fayl turini tanlang</h1>
+            <div class="info-panel">
+                <p><strong>Mutaxasislik:</strong> <span id="fileTypeSpecializationDisplay"></span></p>
+            </div>
+            <div class="buttons-container">
+                <button class="btn field-btn" onclick="goToFileFieldSelection('kursIshi')">Kurs ishi</button>
+                <button class="btn field-btn" onclick="goToFileFieldSelection('laboratoriya')">Laboratoriya ishi</button>
+                <button class="btn field-btn" onclick="goToFileFieldSelection('mustaqilIsh')">Mustaqil ish</button>
+                <button class="btn field-btn" onclick="goToFileFieldSelection('loyiha')">Loyiha ishi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Field Selection Page -->
+    <div class="page" id="fileFieldSelectionPage">
+        <button class="back-btn" onclick="goToFileTypeSelection()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">📂</div>
+            </div>
+            <h1 class="title">Yo'nalishingizni tanlang</h1>
+            <div class="info-panel">
+                <p><strong>Mutaxasislik:</strong> <span id="fileFieldSpecializationDisplay"></span></p>
+                <p><strong>Fayl turi:</strong> <span id="fileFieldTypeDisplay"></span></p>
+            </div>
+            <div class="buttons-container" id="fileFieldsContainer">
+                <!-- Fields will be populated from JSON -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Page -->
+    <div class="page" id="attendancePage">
+        <button class="back-btn" onclick="goToFieldSelection()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">✅</div>
+            </div>
+            <h1 class="title">Davomat nazorati</h1>
+            <div class="info-panel">
+                <p><strong>Mutaxasislik:</strong> <span id="attendanceSpecializationDisplay"></span></p>
+                <p><strong>Sana:</strong> <span id="selectedDateDisplay"></span></p>
+                <p><strong>Yo'nalish:</strong> <span id="selectedFieldDisplay"></span></p>
+            </div>
+            <div id="studentsContainer">
+                <!-- Students will be populated from JSON -->
+            </div>
+            <button class="btn save-btn" onclick="saveAttendance()">Davomatni saqlash</button>
+        </div>
+    </div>
+
+    <!-- File Upload Page -->
+    <div class="page" id="fileUploadPage">
+        <button class="back-btn" onclick="goToFileFieldSelection()">←</button>
+        <div class="container">
+            <div class="logo">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-icon" style="display: none;">📤</div>
+            </div>
+            <h1 class="title">Fayl yuklash</h1>
+            <div class="file-input">
+                <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png">
+                <p>Faylni tanlang</p>
+            </div>
+            <div id="fileInfo" style="margin: 20px 0; padding: 15px; background: rgba(46, 139, 87, 0.1); border-radius: 15px; display: none;">
+                <p><strong>Mutaxasislik:</strong> <span id="uploadSpecializationDisplay"></span></p>
+                <p><strong>Tanlangan fayl:</strong> <span id="fileName"></span></p>
+                <p><strong>Fayl turi:</strong> <span id="selectedFileType"></span></p>
+                <p><strong>Yo'nalish:</strong> <span id="selectedField"></span></p>
+            </div>
+            <button class="btn save-btn" onclick="uploadFile()">Faylni yuborish</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - replace with your actual JSON data
+        const academyData = {
+            fields: [
+                "Iqtisodiyot", "Kiberxavfsizlik", "Kompyuter fanlari", "Matematika",
+                "Fizika", "Kimyo", "Biologiya", "Tarix", "Adabiyot", "Falsafa",
+                "Huquqshunoslik", "Pedagogika", "Psixologiya", "Til va adabiyot"
+            ],
+            students: {
+                "Iqtisodiyot": [
+                    "Aliyev Sardor Rustamovich", "Karimova Malika Azizovna", "Toshmatov Bobur Akmalovich",
+                    "Rahmonova Nilufar Shokirovna", "Yusupov Jasur Bekzodovich", "Nazarova Shahzoda Dilshodovna"
+                ],
+                "Kiberxavfsizlik": [
+                    "Abdullayev Otabek Normurodovich", "Ibragimova Mohinur Farhod qizi", "Sotvoldiyev Doniyor Akramovich",
+                    "Qosimova Zarina Karimovna", "Nematov Javohir Bahromovich"
+                ],
+                "Kompyuter fanlari": [
+                    "Mamadaliyev Aziz Shuhratovich", "Ergasheva Dilnoza Abdurahmonovna", "Sattorov Jamshid Olimovich",
+                    "Haydarova Nigora Rustamovna", "Xolmatov Sardor Davronovich"
+                ]
+                // Add more fields and students as needed
+            }
+        };
+
+        let currentMode = '';
+        let selectedField = '';
+        let selectedFileType = '';
+        let selectedSpecialization = '';
+        let attendanceData = {};
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function goToMain() {
+            showPage('mainPage');
+            currentMode = '';
+            selectedSpecialization = '';
+        }
+
+        function goToSpecialization(mode) {
+            currentMode = mode;
+            showPage('specializationPage');
+        }
+
+        function selectSpecialization(specialization) {
+            selectedSpecialization = specialization;
+            const specializationText = specialization === 'first' ? 'Bakalavr' : 'Magistr';
+            
+            if (currentMode === 'attendance') {
+                // Update specialization display
+                document.getElementById('selectedSpecializationDisplay').textContent = specializationText;
+                showPage('dateSelectionPage');
+                
+                // Set up date input after page is shown
+                setTimeout(() => {
+                    const dateInput = document.getElementById('attendanceDate');
+                    const continueBtn = document.getElementById('continueBtn');
+                    
+                    if (dateInput && continueBtn) {
+                        // Set today as default date
+                        const today = new Date().toISOString().split('T')[0];
+                        dateInput.value = today;
+                        continueBtn.disabled = false;
+                        continueBtn.style.opacity = '1';
+                        
+                        // Add event listener
+                        dateInput.addEventListener('change', function() {
+                            if (this.value) {
+                                continueBtn.disabled = false;
+                                continueBtn.style.opacity = '1';
+                            } else {
+                                continueBtn.disabled = true;
+                                continueBtn.style.opacity = '0.5';
+                            }
+                        });
+                    }
+                }, 100);
+            } else if (currentMode === 'fileUpload') {
+                // Update specialization display and go to file type selection
+                document.getElementById('fileTypeSpecializationDisplay').textContent = specializationText;
+                showPage('fileTypeSelectionPage');
+            }
+        }
+
+        function goToDateSelection() {
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            document.getElementById('selectedSpecializationDisplay').textContent = specializationText;
+            showPage('dateSelectionPage');
+        }
+
+        function goToFieldSelectionFromDate() {
+            const dateInput = document.getElementById('attendanceDate');
+            const selectedDate = dateInput.value;
+            
+            if (!selectedDate) {
+                alert('Iltimos, sanani tanlang!');
+                return;
+            }
+            
+            // Store selected date
+            window.selectedAttendanceDate = selectedDate;
+            
+            // Update displays
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            document.getElementById('fieldPageSpecializationDisplay').textContent = specializationText;
+            document.getElementById('fieldPageDateDisplay').textContent = selectedDate;
+            
+            populateFields('fieldsContainer', 'goToAttendance');
+            showPage('fieldSelectionPage');
+        }
+
+        function goToFieldSelection() {
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            document.getElementById('fieldPageSpecializationDisplay').textContent = specializationText;
+            document.getElementById('fieldPageDateDisplay').textContent = window.selectedAttendanceDate;
+            showPage('fieldSelectionPage');
+        }
+
+        function goToFileTypeSelection() {
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            document.getElementById('fileTypeSpecializationDisplay').textContent = specializationText;
+            showPage('fileTypeSelectionPage');
+        }
+
+        function goToFileFieldSelection(fileType) {
+            selectedFileType = fileType;
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            
+            // Update displays
+            document.getElementById('fileFieldSpecializationDisplay').textContent = specializationText;
+            document.getElementById('fileFieldTypeDisplay').textContent = fileType;
+            
+            populateFields('fileFieldsContainer', 'goToFileUpload');
+            showPage('fileFieldSelectionPage');
+        }
+
+        function populateFields(containerId, onClickFunction) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            academyData.fields.forEach(field => {
+                const button = document.createElement('button');
+                button.className = 'btn btn-small field-btn';
+                button.textContent = field;
+                button.onclick = () => window[onClickFunction](field);
+                container.appendChild(button);
+            });
+        }
+
+        function goToAttendance(field) {
+            selectedField = field;
+            
+            // Update display information
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            document.getElementById('attendanceSpecializationDisplay').textContent = specializationText;
+            document.getElementById('selectedDateDisplay').textContent = window.selectedAttendanceDate;
+            document.getElementById('selectedFieldDisplay').textContent = field;
+            
+            populateStudents(field);
+            showPage('attendancePage');
+        }
+
+        function goToFileUpload(field) {
+            selectedField = field;
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            
+            // Update displays
+            document.getElementById('uploadSpecializationDisplay').textContent = specializationText;
+            document.getElementById('selectedField').textContent = field;
+            document.getElementById('selectedFileType').textContent = selectedFileType;
+            
+            showPage('fileUploadPage');
+        }
+
+        function populateStudents(field) {
+            const container = document.getElementById('studentsContainer');
+            container.innerHTML = '';
+            
+            const students = academyData.students[field] || [];
+            
+            students.forEach((student, index) => {
+                const studentDiv = document.createElement('div');
+                studentDiv.innerHTML = `
+                    <button class="btn student-btn" id="student-${index}" onclick="toggleAttendanceSelector(${index})">
+                        ${student}
+                    </button>
+                    <div class="status-selector" id="selector-${index}">
+                        <button class="status-btn present" onclick="setAttendance(${index}, 'present', '${student}')">Keldi</button>
+                        <button class="status-btn absent" onclick="setAttendance(${index}, 'absent', '${student}')">Kelmadi</button>
+                        <button class="status-btn excused" onclick="setAttendance(${index}, 'excused', '${student}')">Sababli</button>
+                    </div>
+                `;
+                container.appendChild(studentDiv);
+            });
+        }
+
+        function toggleAttendanceSelector(index) {
+            const selector = document.getElementById(`selector-${index}`);
+            // Close all other selectors
+            document.querySelectorAll('.status-selector').forEach(sel => {
+                if (sel.id !== `selector-${index}`) {
+                    sel.classList.remove('active');
+                }
+            });
+            selector.classList.toggle('active');
+        }
+
+        function setAttendance(index, status, studentName) {
+            const studentBtn = document.getElementById(`student-${index}`);
+            const selector = document.getElementById(`selector-${index}`);
+            
+            // Remove previous status classes
+            studentBtn.classList.remove('present', 'absent', 'excused');
+            // Add new status class
+            studentBtn.classList.add(status);
+            
+            // Store attendance data
+            attendanceData[studentName] = status;
+            
+            // Hide selector
+            selector.classList.remove('active');
+        }
+
+        function saveAttendance() {
+            const data = {
+                specialization: selectedSpecialization,
+                field: selectedField,
+                date: window.selectedAttendanceDate,
+                time: new Date().toLocaleTimeString(),
+                attendance: attendanceData
+            };
+
+            // Simulate saving to Google Sheets
+            console.log('Attendance data to save:', data);
+            
+            // Here you would typically send this data to your Google Sheets API
+            // Example: sendToGoogleSheets(data);
+            
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            alert(`Davomat muvaffaqiyatli saqlandi!\n\nMutaxasislik: ${specializationText}\nSana: ${window.selectedAttendanceDate}\nYo'nalish: ${selectedField}\n\nMa'lumotlar Google Sheets ga yuborildi.`);
+            
+            // Reset for next use
+            attendanceData = {};
+            window.selectedAttendanceDate = '';
+            goToMain();
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Iltimos, faylni tanlang!');
+                return;
+            }
+
+            const data = {
+                specialization: selectedSpecialization,
+                fileName: file.name,
+                fileType: selectedFileType,
+                field: selectedField,
+                date: new Date().toISOString().split('T')[0],
+                time: new Date().toLocaleTimeString(),
+                username: 'TelegramUser', // This would be actual Telegram username
+                file: file
+            };
+
+            // Simulate file upload and sending to Telegram group
+            console.log('File data to upload:', data);
+            
+            // Here you would typically:
+            // 1. Upload file to your server/cloud storage
+            // 2. Send notification with file info to Telegram group
+            // Example: sendFileToTelegramGroup(data);
+            
+            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            alert(`Fayl muvaffaqiyatli yuborildi!\n\nMutaxasislik: ${specializationText}\nFayl: ${file.name}\nTur: ${selectedFileType}\nYo'nalish: ${selectedField}\n\nFayl guruhga yuborildi.`);
+            
+            // Reset form
+            fileInput.value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            goToMain();
+        }
+
+        // File input change handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileUpload');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+
+            // File input handler
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (this.files[0]) {
+                        fileName.textContent = this.files[0].name;
+                        fileInfo.style.display = 'block';
+                    } else {
+                        fileInfo.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Google Sheets integration function (you need to implement this)
+        function sendToGoogleSheets(data) {
+            // Example implementation:
+            // const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+            // fetch(scriptURL, {
+            //     method: 'POST',
+            //     body: JSON.stringify(data),
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+            // .then(response => response.json())
+            // .then(result => console.log('Success:', result))
+            // .catch(error => console.error('Error:', error));
+        }
+
+        // Telegram Bot API integration function (you need to implement this)
+        function sendFileToTelegramGroup(data) {
+            // Example implementation with specialization info:
+            // const botToken = 'YOUR_BOT_TOKEN';
+            // const chatId = 'YOUR_GROUP_CHAT_ID';
+            // const formData = new FormData();
+            // formData.append('document', data.file);
+            // const specializationText = data.specialization === 'first' ? 'Bakalavr' : 'Magistr';
+            // formData.append('caption', `📁 Yangi fayl yuklandi:\n\n👤 Yuboruvchi: ${data.username}\n🎓 Mutaxasislik: ${specializationText}\n📝 Tur: ${data.fileType}\n🎯 Yo'nalish: ${data.field}\n📅 Sana: ${data.date} ${data.time}`);
+            
+            // fetch(`https://api.telegram.org/bot${botToken}/sendDocument?chat_id=${chatId}`, {
+            //     method: 'POST',
+            //     body: formData
+            // });
+        }
+    </script>
+</body>
+</html>

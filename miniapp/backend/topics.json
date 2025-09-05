@@ -1,0 +1,18 @@
+{
+  "1-bosqich": {
+    "chat_id": -1001234567890,
+    "topics": {
+      "Iqtisodiyot": 101,
+      "Huquqshunoslik": 102,
+      "Kompyuter fanlari": 103
+    }
+  },
+  "2-bosqich": {
+    "chat_id": -1009876543210,
+    "topics": {
+      "Iqtisodiyot": 201,
+      "Huquqshunoslik": 202,
+      "Kompyuter fanlari": 203
+    }
+  }
+}
