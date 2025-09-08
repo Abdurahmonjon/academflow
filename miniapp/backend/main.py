@@ -1,4 +1,3 @@
-# main.py
 import os
 from datetime import datetime
 from typing import Dict, Optional
@@ -9,14 +8,17 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, validator
 import gspread
+import time
+from fastapi import Request
+import threading
 
 # =========================
 # ------- CONFIG ----------
 # =========================
 
 # Google Sheets: har bosqich uchun alohida Spreadsheet ID
-SPREADSHEET_ID_1 = os.getenv("SPREADSHEET_ID_1", "")  # 1-bosqich
-SPREADSHEET_ID_2 = os.getenv("SPREADSHEET_ID_2", "")  # 2-bosqich
+SPREADSHEET_ID_1 = os.getenv("SPREADSHEET_ID_1", "1vNAbd0SHK4Co0aTUU_fzkmGDtijHt69o2cEN0DgbjFk")  # 1-bosqich
+SPREADSHEET_ID_2 = os.getenv("SPREADSHEET_ID_2", "1s4Fu_j7S7PW3mkKO3Sboefxoxxb_bQo5WLmifCYH88w")  # 2-bosqich
 # Agar worksheet nomi aniq bo‘lsa, kiriting (aks holda birinchi varaq ishlatiladi)
 WORKSHEET_TITLE = os.getenv("WORKSHEET_TITLE", "")  # masalan: "Attendance"
 
@@ -24,7 +26,7 @@ WORKSHEET_TITLE = os.getenv("WORKSHEET_TITLE", "")  # masalan: "Attendance"
 CREDENTIALS_FILE = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "credentials.json")
 
 # Telegram bot konfiguratsiyasi
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8388239106:AAF7onMN3FvA8TST-bZO2FKe9yJHon6EtZE")
 
 # Topic (forum mavzusi) mapping'lari:
 #  - Telegram superguruh "Topics" yoqilgan bo‘lishi kerak.
@@ -70,6 +72,7 @@ app.add_middleware(
 try:
     gs_client = gspread.service_account(filename=CREDENTIALS_FILE)
 except Exception as e:
+    print("googlesheetsa ulanmadi....--->>>>>>")
     raise RuntimeError(f"Google Sheets service account ulanmadi: {e}")
 
 # =========================
@@ -82,16 +85,16 @@ def normalize_stage(stage_raw: str) -> str:
     Qabul qilinadigan qiymatlar: '1-bosqich', '2-bosqich', 'Bakalavr', 'Magistr' va h.k.
     """
     s = (stage_raw or "").strip().lower()
-    if "1" in s or "bakal" in s:
+    if "1" in s or "bakalavr" in s:
         return "1-bosqich"
     if "2" in s or "magistr" in s:
         return "2-bosqich"
     # default holda kelsa ham xatoga yo‘l qo‘ymaymiz:
     return stage_raw
 
-def sheet_for_stage(stage: str):
+def sheet_for_stage(stage: str, field: str):
     """
-    Bosqichga mos Google Sheet'ni ochib, kerakli worksheet'ni qaytaradi.
+    Bosqich va yo'nalishga (field) mos Google Sheet'ni qaytaradi.
     """
     stage_norm = normalize_stage(stage)
     if stage_norm == "1-bosqich":
@@ -99,24 +102,21 @@ def sheet_for_stage(stage: str):
     elif stage_norm == "2-bosqich":
         ssid = SPREADSHEET_ID_2
     else:
-        # Noma'lum bosqich — xavfsizroq qilish uchun 400 qaytaramiz
         raise HTTPException(status_code=400, detail=f"Noma'lum bosqich: {stage}")
 
     if not ssid:
-        raise HTTPException(status_code=500, detail="Spreadsheet ID sozlanmagan (SPREADSHEET_ID_1 yoki SPREADSHEET_ID_2).")
+        raise HTTPException(status_code=500, detail="Spreadsheet ID sozlanmagan.")
 
     try:
         sh = gs_client.open_by_key(ssid)
-        if WORKSHEET_TITLE:
-            try:
-                ws = sh.worksheet(WORKSHEET_TITLE)
-            except gspread.WorksheetNotFound:
-                ws = sh.add_worksheet(title=WORKSHEET_TITLE, rows=1000, cols=20)
-        else:
-            ws = sh.sheet1
+        try:
+            ws = sh.worksheet(field)   # field nomiga mos worksheet ochamiz
+        except gspread.WorksheetNotFound:
+            ws = sh.add_worksheet(title=field, rows=1000, cols=30)
         return ws
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Google Sheets ulanishida xatolik: {e}")
+
 
 def slugify(text: str) -> str:
     """
@@ -267,6 +267,22 @@ class AttendancePayload(BaseModel):
 def health():
     return {"ok": True, "service": "AkademFlow API", "version": "1.0"}
 
+@app.get("/ping")
+def ping():
+    return {"pong": True}
+
+# --- Keep alive ---
+def keep_alive():
+    url = os.getenv("RENDER_URL", "https://your-app.onrender.com/ping")
+    while True:
+        try:
+            print("⏳ Pinging self...")
+            r = requests.get(url, timeout=10)
+            print("✅ Ping status:", r.status_code)
+        except Exception as e:
+            print("❌ Ping error:", e)
+        time.sleep(600)  # 10 daqiqa
+
 # @app.post("/api/attendance")
 # def save_attendance(payload: AttendancePayload):
 #     """
@@ -298,29 +314,29 @@ def health():
     #     "date": date_str,
     #     "time": time_str,
     # }
-@app.post("/api/attendance")
+
+@app.post("/api/attendances")
 def save_attendance(payload: AttendancePayload):
     """
-    Davomatni bosqichga mos Google Sheet'ga yozadi.
-    Sana bo‘yicha ustun yaratadi yoki yangilaydi.
-    Student allaqachon bo‘lsa — yangilanadi, bo‘lmasa yangi qator qo‘shiladi.
-    Oxirgi ustunga submit vaqti yoziladi.
+    Davomatni bosqichga mos spreadsheet va fieldga mos worksheet'ga yozadi.
+    Format:
+    N | F.I.O | Sana | ...
     """
     stage = "1-bosqich" if payload.specialization == "first" else "2-bosqich"
-    ws = sheet_for_stage(stage)
+    ws = sheet_for_stage(stage, payload.field)
 
     date_str = payload.date or datetime.now().strftime("%Y-%m-%d")
     time_str = payload.time or datetime.now().strftime("%H:%M")
-    username = payload.username or "Anonim"
-
+    print("Kelgan JSON:", payload.dict())
     # Google Sheetdagi barcha ma’lumotlarni olish
     values = ws.get_all_values()
     if not values:
-        values = [["N", "F.I.SH"]]  # default header
+        values = [["N", "F.I.O"]]  # default header
+        ws.update("A1", [values[0]])
 
     header = values[0]
 
-    # Sana uchun ustun bor yoki yo‘qligini tekshirish
+    # Sana uchun ustun mavjudligini tekshirish
     try:
         date_col_idx = header.index(date_str)
     except ValueError:
@@ -328,76 +344,215 @@ def save_attendance(payload: AttendancePayload):
         header.append(date_str)
         ws.update("A1", [header])  # headerni yangilash
 
-    # Oxirgi ustun = "So‘nggi submit vaqti"
-    if "last_submit" not in [h.lower() for h in header]:
-        header.append("Last_Submit")
-        ws.update("A1", [header])
-    last_submit_idx = header.index("Last_Submit")
-
     # Student mapping (ism -> qator)
-    student_map = {row[1]: i+1 for i, row in enumerate(values[1:], start=1)}
+    student_map = {row[1]: i+1 for i, row in enumerate(values[1:], start=1) if len(row) > 1}
+
+    # Qaysi qatorda yozish kerakligini aniqlash
+    row_idx = 2  # 1-qator header, 2-dan boshlanadi
+    n_counter = len(student_map) + 1
 
     for student, status in payload.attendance.items():
         if student in student_map:
-            row_idx = student_map[student] + 1  # Google Sheets qatori (1-based)
-            ws.update_cell(row_idx, date_col_idx+1, status)       # status yozish
-            ws.update_cell(row_idx, last_submit_idx+1, time_str)  # oxirgi vaqt
+            row_idx = student_map[student] + 1
+            ws.update_cell(row_idx, date_col_idx+1, status)
         else:
             new_row = [""] * len(header)
+            new_row[0] = str(n_counter)
             new_row[1] = student
             new_row[date_col_idx] = status
-            new_row[last_submit_idx] = time_str
             ws.append_row(new_row, value_input_option="RAW")
+            n_counter += 1
+
+    # Statuslar tugaganidan keyin, oxirgi qatorda submit vaqti yoziladi
+    last_row = len(ws.get_all_values()) + 1
+    ws.update_cell(last_row, date_col_idx+1, f"Submitted at {time_str}")
 
     return {"ok": True, "stage": stage, "field": payload.field, "date": date_str, "time": time_str}
+@app.post("/api/attendance")
+def save_attendance(payload: AttendancePayload):
+    """
+    Davomatni bosqichga mos spreadsheet va fieldga mos worksheet'ga yozadi.
+    Jadval formati (misol):
+    N | F.I.O | 2025-09-07 |
+    1 | Talaba A | present |
+    2 | Talaba B | absent  |
+    ...
+    (oxirida)   | last commit | 09:43:49 AM |
+    ---
+    Eslatma: bu funksiya talabalarni YANGI ro'yxatga qo'shmaydi — faqat jadvalda mavjud isimlarga yozadi.
+    """
+    try:
+        stage = "1-bosqich" if payload.specialization == "first" else "2-bosqich"
+        ws = sheet_for_stage(stage, payload.field)
+
+        date_str = payload.date or datetime.now().strftime("%Y-%m-%d")
+        # agar frontend "8:40:39 PM" kabi formatda yuborsa, uni shunday saqlaymiz:
+        time_str = payload.time or datetime.now().strftime("%H:%M:%S")
+        print("Kelgan JSON:", payload.dict())
+
+        # O'rnatiladigan map — sheetga inson o'qishi qulay holatda yozish uchun:
+        DISPLAY_STATUS = {
+            "present": "Keldi",
+            "absent": "Kelmadi",
+            "excused": "Sababli",
+        }
+
+        # Jadvalni olib kelamiz (header + satrlar)
+        values = ws.get_all_values()
+        if not values:
+            # Agar jadval butunlay bo'sh bo'lsa — minimal header yaratamiz.
+            header = ["N", "F.I.O", date_str]
+            ws.update("A1", [header])
+            values = ws.get_all_values()
+        else:
+            header = values[0]
+            # Sana ustuni mavjudmi tekshir — yo'q bo'lsa qo'sh
+            if date_str not in header:
+                header.append(date_str)
+                ws.update("A1", [header])
+                # header yangilanganini olish uchun qayta o'qiymiz
+                values = ws.get_all_values()
+                header = values[0]
+
+        # index (0-based) qilib olish
+        try:
+            date_col_idx = header.index(date_str)  # 0-based index
+        except ValueError:
+            # bu hol hech bo'lmasligi kerak, lekin himoya uchun:
+            date_col_idx = len(header) - 1
+
+        # Talabalar nomi -> qator (1-based row index for gspread)
+        student_map = {}
+        for row_idx, row in enumerate(values[1:], start=2):  # start=2 chunki sheet qatorlari 1-based va 1-qator header
+            if len(row) > 1 and row[1].strip():
+                name_norm = row[1].strip().lower()
+                student_map[name_norm] = row_idx
+
+        updated = 0
+        missing = []
+
+        # Har bir kelgan attendance yoziladi faqat jadvalda bor bo'lsa
+        for student, status in payload.attendance.items():
+            key = (student or "").strip().lower()
+            if not key:
+                continue
+            row_num = student_map.get(key)
+            if row_num:
+                display = DISPLAY_STATUS.get(status, status)  # agar mapping bo'lsa O'zbekcha, yo'q bo'lsa original
+                # gspread update_cell row, col (1-based). date_col_idx 0-based -> +1
+                ws.update_cell(row_num, date_col_idx + 1, display)
+                updated += 1
+            else:
+                # jadvalda topilmadi — skip qilamiz (yoki xohlasangiz append qilsin deb o'zgartirish mumkin)
+                missing.append(student)
+
+        # Oxirgi "last commit" qatorini topish yoki qo'shish
+        # 2-ustunda "last commit" (yoki oldingi formatlar) bo'lsa yangilaymiz, aks holda qo'shamiz.
+        values_after = ws.get_all_values()
+        header_after = values_after[0]
+        found_last = None
+        for rr_idx, rr in enumerate(values_after[1:], start=2):
+            if len(rr) > 1 and isinstance(rr[1], str) and rr[1].strip().lower() in (
+                "last commit", "last_commit", "last submit", "last_submit", "last", "last_submit"):
+                found_last = rr_idx
+                break
+
+        if found_last:
+            ws.update_cell(found_last, date_col_idx + 1, time_str)
+        else:
+            # yangi qator yaratamiz: bo'sh N, 2-ustunda "last commit", sana ustunida vaqt
+            new_row = [""] * len(header_after)
+            # ikkinchi ustun (F.I.O) ga 'last commit' yozamiz
+            if len(new_row) >= 2:
+                new_row[1] = "last commit"
+            else:
+                # agar header juda qisqa bo'lsa minimal shakl
+                new_row.append("last commit")
+            # date ustuniga vaqt qo'yamiz
+            if date_col_idx < len(new_row):
+                new_row[date_col_idx] = time_str
+            else:
+                # pad qilish
+                while len(new_row) <= date_col_idx:
+                    new_row.append("")
+                new_row[date_col_idx] = time_str
+            ws.append_row(new_row, value_input_option="RAW")
+
+        return {
+            "ok": True,
+            "stage": stage,
+            "field": payload.field,
+            "date": date_str,
+            "time": time_str,
+            "updated": updated,
+            "missing": missing,
+        }
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/upload")
 async def upload_file(
     file: UploadFile = File(...),
-    specialization: str = Form(...),
-    field: str = Form(...),
+    username: str = Form(...),
     fileType: str = Form(...),
-    username: str = Form("Anonim"),
+    field: str = Form(...),
+    specialization: str = Form(...),
 ):
-    stage = "1-bosqich" if specialization == "first" else "2-bosqich"
+    try:
+        print("✅ Kelgan so‘rov:", specialization, field, fileType, username)
+        print("📂 Fayl nomi:", file.filename)
 
-    content = await file.read()
-    date_str = datetime.now().strftime("%Y-%m-%d")
-    time_str = datetime.now().strftime("%H:%M")
+        stage = "1-bosqich" if specialization == "first" or specialization == "bakalavr" else "2-bosqich"
 
-    tags = hashtags(stage, field, fileType)
-    caption = (
-        f"📁 <b>Yangi fayl yuklandi</b>\n"
-        f"👤 <b>Talaba:</b> {username}\n"
-        f"🎓 <b>Bosqich:</b> {stage}\n"
-        f"🔖 <b>Yo‘nalish:</b> {field}\n"
-        f"📝 <b>Fayl turi:</b> {fileType}\n"
-        f"📅 <b>Sana:</b> {date_str} {time_str}\n\n"
-        f"{tags}"
-    )
+        content = await file.read()
+        print("📄 Fayl uzunligi (bytes):", len(content))
 
-    # topics.json dan chat_id va topic_id olish
-    chat_id, topic_id = get_chat_and_topic(stage, field)
-    if not chat_id or not topic_id:
-        raise HTTPException(status_code=400, detail="Chat yoki Topic ID topilmadi")
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        time_str = datetime.now().strftime("%H:%M")
 
-    # Faylni yuborish
-    resp = send_doc_to_telegram(
-        bot_token=BOT_TOKEN,
-        chat_id=chat_id,
-        document_bytes=content,
-        filename=file.filename,
-        caption=caption,
-        message_thread_id=topic_id,
-    )
+        tags = hashtags(stage, field, fileType)
+        caption = (
+            f"📁 <b>Yangi fayl yuklandi</b>\n"
+            f"👤 <b>Talaba:</b> {username}\n"
+            f"🎓 <b>Bosqich:</b> {stage}\n"
+            f"🔖 <b>Yo‘nalish:</b> {field}\n"
+            f"📝 <b>Fayl turi:</b> {fileType}\n"
+            f"📅 <b>Sana:</b> {date_str} {time_str}\n\n"
+            f"{tags}"
+        )
 
-    return {"ok": True, "chat_id": chat_id, "topic_id": topic_id, "resp": resp}
+        chat_id, topic_id = get_chat_and_topic(stage, field)
+        print("💬 Chat:", chat_id, "Topic:", topic_id)
+
+        if not chat_id or not topic_id:
+            raise HTTPException(status_code=400, detail="Chat yoki Topic ID topilmadi")
+
+        resp = send_doc_to_telegram(
+            bot_token=BOT_TOKEN,
+            chat_id=chat_id,
+            document_bytes=content,
+            filename=file.filename,
+            caption=caption,
+            message_thread_id=topic_id,
+        )
+        print("📨 Telegram javobi:", resp)
+
+        return {"ok": True, "chat_id": chat_id, "topic_id": topic_id, "resp": resp}
+
+    except Exception as e:
+        print("❌ Xato:", str(e))
+        raise
 
 # =========================
 # ------- RUNNER ----------
 # =========================
 
 if __name__ == "__main__":
+    # keep-alive threadni ishga tushiramiz
+    threading.Thread(target=keep_alive, daemon=True).start()
     # Lokalda bevosita: python3 main.py
     uvicorn.run("main:app", host="0.0.0.0", port=int(os.getenv("PORT", 8000)), reload=True)

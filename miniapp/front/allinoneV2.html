@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +64,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             animation: rotate 3s linear infinite;
         }
 
@@ -85,13 +86,25 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .title {
@@ -133,7 +146,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
             transition: left 0.5s ease;
         }
 
@@ -358,26 +371,26 @@
                 margin: 10px;
                 max-height: 85vh;
             }
-            
+
             .logo {
                 width: 100px;
                 height: 100px;
             }
-            
+
             .logo-image {
                 width: 70px;
                 height: 70px;
             }
-            
+
             .logo-icon {
                 font-size: 40px;
             }
-            
+
             .title {
                 font-size: 18px;
                 margin-bottom: 30px;
             }
-            
+
             .btn {
                 padding: 16px 25px;
                 font-size: 15px;
@@ -385,12 +398,14 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Main Page -->
     <div class="page active" id="mainPage">
         <div class="container">
             <div class="logo">
-                <img src="image.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="image.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">🕌</div>
             </div>
             <h1 class="title">Xalqaro islomshunoslik akademiyasi Magistrlari</h1>
@@ -406,13 +421,14 @@
         <button class="back-btn" onclick="goToMain()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">📚</div>
             </div>
             <h1 class="title">Mutaxasislik bosqichingizni tanlang</h1>
             <div class="buttons-container">
-                <button class="btn" onclick="selectSpecialization('first')">Bakalavr</button>
-                <button class="btn btn-secondary" onclick="selectSpecialization('second')">Magistr</button>
+                <button class="btn" onclick="selectSpecialization('bakalavr')">1-bosqich</button>
+                <button class="btn btn-secondary" onclick="selectSpecialization('magistr')">2-bosqich</button>
             </div>
         </div>
     </div>
@@ -422,7 +438,8 @@
         <button class="back-btn" onclick="goToSpecialization()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">📅</div>
             </div>
             <h1 class="title">Davomat sanasini tanlang</h1>
@@ -434,7 +451,8 @@
                 <input type="date" id="attendanceDate" required>
             </div>
             <div class="buttons-container">
-                <button class="btn" onclick="goToFieldSelectionFromDate()" id="continueBtn" disabled>Davom etish</button>
+                <button class="btn" onclick="goToFieldSelectionFromDate()" id="continueBtn" disabled>Davom
+                    etish</button>
             </div>
         </div>
     </div>
@@ -444,7 +462,8 @@
         <button class="back-btn" onclick="goToDateSelection()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">🎓</div>
             </div>
             <h1 class="title">Yo'nalishingizni tanlang</h1>
@@ -463,7 +482,8 @@
         <button class="back-btn" onclick="goToSpecialization()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">📁</div>
             </div>
             <h1 class="title">Fayl turini tanlang</h1>
@@ -471,10 +491,8 @@
                 <p><strong>Mutaxasislik:</strong> <span id="fileTypeSpecializationDisplay"></span></p>
             </div>
             <div class="buttons-container">
-                <button class="btn field-btn" onclick="goToFileFieldSelection('kursIshi')">Kurs ishi</button>
-                <button class="btn field-btn" onclick="goToFileFieldSelection('laboratoriya')">Laboratoriya ishi</button>
-                <button class="btn field-btn" onclick="goToFileFieldSelection('mustaqilIsh')">Mustaqil ish</button>
-                <button class="btn field-btn" onclick="goToFileFieldSelection('loyiha')">Loyiha ishi</button>
+                <button class="btn field-btn" onclick="goToFileFieldSelection('malumotnoma')">Malumotnoma</button>
+                <button class="btn field-btn" onclick="goToFileFieldSelection('tadbir')">Manaviy tadbirlar</button>
             </div>
         </div>
     </div>
@@ -484,7 +502,8 @@
         <button class="back-btn" onclick="goToFileTypeSelection()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">📂</div>
             </div>
             <h1 class="title">Yo'nalishingizni tanlang</h1>
@@ -503,7 +522,8 @@
         <button class="back-btn" onclick="goToFieldSelection()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">✅</div>
             </div>
             <h1 class="title">Davomat nazorati</h1>
@@ -524,7 +544,8 @@
         <button class="back-btn" onclick="goToFileFieldSelection()">←</button>
         <div class="container">
             <div class="logo">
-                <img src="your-logo.png" alt="Academy Logo" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="your-logo.png" alt="Academy Logo" class="logo-image"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <div class="logo-icon" style="display: none;">📤</div>
             </div>
             <h1 class="title">Fayl yuklash</h1>
@@ -532,7 +553,8 @@
                 <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png">
                 <p>Faylni tanlang</p>
             </div>
-            <div id="fileInfo" style="margin: 20px 0; padding: 15px; background: rgba(46, 139, 87, 0.1); border-radius: 15px; display: none;">
+            <div id="fileInfo"
+                style="margin: 20px 0; padding: 15px; background: rgba(46, 139, 87, 0.1); border-radius: 15px; display: none;">
                 <p><strong>Mutaxasislik:</strong> <span id="uploadSpecializationDisplay"></span></p>
                 <p><strong>Tanlangan fayl:</strong> <span id="fileName"></span></p>
                 <p><strong>Fayl turi:</strong> <span id="selectedFileType"></span></p>
@@ -543,27 +565,113 @@
     </div>
 
     <script>
-        // Sample data - replace with your actual JSON data
+        // Updated data structure with separate specializations
         const academyData = {
-            fields: [
-                "Iqtisodiyot", "Kiberxavfsizlik", "Kompyuter fanlari", "Matematika",
-                "Fizika", "Kimyo", "Biologiya", "Tarix", "Adabiyot", "Falsafa",
-                "Huquqshunoslik", "Pedagogika", "Psixologiya", "Til va adabiyot"
-            ],
-            students: {
-                "Iqtisodiyot": [
-                    "Aliyev Sardor Rustamovich", "Karimova Malika Azizovna", "Toshmatov Bobur Akmalovich",
-                    "Rahmonova Nilufar Shokirovna", "Yusupov Jasur Bekzodovich", "Nazarova Shahzoda Dilshodovna"
+            bakalavr: {
+                fields: [
+                    "Iqtisodiyot", "Axborot xavfsizligi", "Islomshunoslik", "Dinshunoslik",
+                    "Lingvistika", "Tarix", "Psixologiya"
                 ],
-                "Kiberxavfsizlik": [
-                    "Abdullayev Otabek Normurodovich", "Ibragimova Mohinur Farhod qizi", "Sotvoldiyev Doniyor Akramovich",
-                    "Qosimova Zarina Karimovna", "Nematov Javohir Bahromovich"
+                students: {
+                    "Iqtisodiyot": [
+                        "Aliyev Sardor Rustamovich", "Karimova Malika Azizovna", "Toshmatov Bobur Akmalovich",
+                        "Rahmonova Nilufar Shokirovna", "Yusupov Jasur Bekzodovich", "Nazarova Shahzoda Dilshodovna"
+                    ],
+                    "Axborot xavfsizligi": [
+                        "Abdullayev Otabek Normurodovich", "Ibragimova Mohinur Farhod qizi", "Sotvoldiyev Doniyor Akramovich",
+                        "Qosimova Zarina Karimovna", "Nematov Javohir Bahromovich"
+                    ],
+                    "Islomshunoslik": [
+                        "Mamadaliyev Aziz Shuhratovich", "Ergasheva Dilnoza Abdurahmonovna", "Sattorov Jamshid Olimovich",
+                        "Haydarova Nigora Rustamovna", "Xolmatov Sardor Davronovich"
+                    ],
+                    "Dinshunoslik": [
+                        "Mirzayev Anvar Karimovich", "Salimova Gulnoza Rustamovna", "Nazarov Islom Botirovich",
+                        "Tursunova Feruza Shavkatovna", "Rahmatov Jamshid Azimovich"
+                    ],
+                    "Lingvistika": [
+                        "Qodirov Sherzod Abdulatifovich", "Hasanova Dilfuza Akmalovna", "Tojiyev Bobur Ergashevich",
+                        "Yunusova Kamola Dilshodovna"
+                    ],
+                    "Tarix": [
+                        "Saidov Aziz Normurodovich", "Xolmatova Madina Shavkatovna", "Erkinov Sardor Davronovich",
+                        "Abdullayeva Nigina Rustamovna"
+                    ],
+                    "Psixologiya": [
+                        "Yuldashev Otabek Karimovich", "Tosheva Dilnoza Azizovna", "Nematov Jasur Bahromovich",
+                        "Qosimova Gulnora Shokirovna"
+                    ]
+                }
+            },
+            magistr: {
+                fields: [
+                    "Islomshunoslik", "Dinshunoslik", "Lingvistika", "Matnshunoslik", 
+                    "Tarix", "Psixologiya", "Xalqaro munosabatlar", "Iqtisodiyot", "Tashqi iqtisodiyot", "Islom huquqi",
+                    "Turizm", "Axborot xavfsizligi"
                 ],
-                "Kompyuter fanlari": [
-                    "Mamadaliyev Aziz Shuhratovich", "Ergasheva Dilnoza Abdurahmonovna", "Sattorov Jamshid Olimovich",
-                    "Haydarova Nigora Rustamovna", "Xolmatov Sardor Davronovich"
-                ]
-                // Add more fields and students as needed
+                students: {
+                    "Islomshunoslik": [
+                        "Lapasov Muxammadsodiq", "Sharopov Sarvar", "Fozilova Muslimaxon","Jamolova Ra‘no",
+                        "Axmadjonov Ismatillo", "Turdimirzayeva Irodaxon", "Yodgorova Soliha", "Azizova Marjonabonu",
+                        "Nazimjonova Dilzoda", "Yuldasheva Dilfuza", "Yakuboya Ziyoda", "Alimov Muhammadali",
+                        "Tavakkaljonova Ruqiya", "Saminov Muxammadsodiq", "Musayeva Munisxon", "Kenjayev Nodirbek",
+                        "Abdumutaliyev Nodir","Gulmatov Muhammad","Ergasheva Zilola","Panjiyeva Marjona","Satvaldiyeva Madinabonu"
+                    ],
+                    "Dinshunoslik": [
+                        "Muftillayev Luqmonjon", "Tuliyev Valijon", "Narziyeva Muxabbat", "To‘xtanazarov Muhammadjon",
+                        "Karimov Muhriddin", "Xaitov Mirzobek", "Muxammatdinov Aǵzammatdin", "Abdug‘offorov Jasurbek",
+                        "Boymuxammedov Raxmatillo", "Xalimjonova Nozimaxon", "Rahimov Yosinbek", "Jo‘raqulov Shokirjon",
+                        "Komiljonov", "Shavqotulloyev Ibodulloh", "Otajonov Ziyomuhammad", "Onorboyeva Ma‘mura",
+                        "Avliyoxonov", "Sultanova Marhaboxon"
+                    ],
+                    "Lingvistika": [
+                        "Rasulova Zebiniso", "Axtamova Aziza", "Maxamadjonova Moxichexra", "Masharifov Doniyor",
+                        "Mamirov Asadbek", "Yusupova Dilorom", "Ilyosova Munisa", "Rajapboyeva Dildora",
+                        "Rustamova Sharifa", "Kamoldinova Muqaddasxon", "Alimkulov No‘monjon", "Saidkarimova E‘zozaxon"
+                    ],
+                    "Matnshunoslik": [
+                        "Turg‘unov Nuriddin", "Saidmalik Maryam", "Qo‘chqarova Musallamoy", "Ergashev Abdulvosi",
+                        "Xayrulloyev Saidjon", "Umarjonov Umidjon", "Karimov Muxammadamin", "Ergashev Shoislom",
+                        "Mamadaliyev Otabek", "Po‘latova Shaxzodaxon", "Baxtiyorova E‘zozaxon", "Abdinazarova Dildora",
+                        "Abdujalilov Hamidullo", "Yo‘ldoshaliyeva Marjona"
+                    ],
+                    "Tarix": [
+                        "Qosimov Jaxongir", "Soibjonova Samiya", "Jabborova Oydin", "Zubaydullayeva Zarina",
+                        "G‘ulomov Fayzullo", "Xakimjonov Dilmurod", "Abdiqodirov Muxammadamin", "Asrolmirzayev Isoqjon",
+                        "Quvvatova Maftunabonu", "Po‘latova Umidaxon", "Soliyeva Gulxayo", "Saidkulov Aliaskar"
+                    ],
+                    "Psixologiya": [
+                        "Maxmudova Munisaxon", "O‘ktamova Nihola", "Umarova Maftuna", "Sadirova Zumrad",
+                        "Xudayberdiyeva Dilobar", "Ibroximova Nasiba", "Axrorova Zebo", "Hasanova Barnoxon",
+                        "Tojiddinova Layloxon", "Jonibekova Xusniyobonu", "Zarpullayev Kamol", "Azizbekova Madina"
+                    ],
+                    "Xalqaro munosabatlar": [
+                        "Dalimirzayev Javoxir", "Abduvoitov Shoxruxxon", "Nurmuxamatov Javohir", "Xolmatov Saidbek",
+                        "Idrisov Abduljamil", "Halimova Madinabonu"
+                    ],
+                    "Iqtisodiyot": [
+                        "Qarshiboyev Anvar", "Qodirova Gulufar", "Qosimova Nargiza", "Orifjonov Maxammadjon",
+                        "Abdulxakimov Abdulloh", "Ahmadova Shahlo", "Nurullayeva Lobarxon", "Ismailov Shahobiddin"
+
+                    ],
+                    "Tashqi iqtisodiyot": [
+                        "Ilxomov Elyor", "Saparova Iroda", "Shamansurova Munisa", "Nuriddinova Shodiyaxon"
+                    ],
+                    "Islom huquqi": [
+                        "Yokubjanov Abdurashid", "Shukurova Shaxrizoda", "Abdupattayev Muxammadamin",
+                        "Olimjonov Xusanjon", "Saidakramov Saidazimxon", "Abdreymov Nurbol",
+                        "Raximov Elyor", "Kurbanov Xayrulla", "Pormanov Bobosher", "Komilova Maloxat",
+                        "Alisherov Fayzulloh", "Bahodirova Oydina"
+                    ],
+                    "Turizm": [
+                        "Rasulova Xonzodabegim", "Azizova Sug‘diyona", "Ibragimova Mohigul",
+                        "Bosimova Nafisaxon", "Usmonova Shohida", "Xoshimova Dilnoza"
+                    ],
+                    "Axborot xavfsizligi": [
+                        "Obidinov Abdurahmonjon", "Rustamova Munavvar", "To‘xtasinov Furqatjon",
+                        "Turdiyev Muxtorjon", "Behzod Amani"
+                    ]
+                }
             }
         };
 
@@ -572,6 +680,16 @@
         let selectedFileType = '';
         let selectedSpecialization = '';
         let attendanceData = {};
+
+        // Function to get display text for specialization
+        function getSpecializationText(spec) {
+            return spec === 'bakalavr' ? '1-bosqich' : '2-bosqich';
+        }
+
+        // Function to get backend value for specialization
+        function getBackendSpecialization(spec) {
+            return spec === 'bakalavr' ? 'first' : 'second';
+        }
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
@@ -584,6 +702,8 @@
             showPage('mainPage');
             currentMode = '';
             selectedSpecialization = '';
+            // Clear any existing event listeners to prevent duplicates
+            clearEventListeners();
         }
 
         function goToSpecialization(mode) {
@@ -593,36 +713,16 @@
 
         function selectSpecialization(specialization) {
             selectedSpecialization = specialization;
-            const specializationText = specialization === 'first' ? 'Bakalavr' : 'Magistr';
-            
+            const specializationText = getSpecializationText(specialization);
+
             if (currentMode === 'attendance') {
                 // Update specialization display
                 document.getElementById('selectedSpecializationDisplay').textContent = specializationText;
                 showPage('dateSelectionPage');
-                
+
                 // Set up date input after page is shown
                 setTimeout(() => {
-                    const dateInput = document.getElementById('attendanceDate');
-                    const continueBtn = document.getElementById('continueBtn');
-                    
-                    if (dateInput && continueBtn) {
-                        // Set today as default date
-                        const today = new Date().toISOString().split('T')[0];
-                        dateInput.value = today;
-                        continueBtn.disabled = false;
-                        continueBtn.style.opacity = '1';
-                        
-                        // Add event listener
-                        dateInput.addEventListener('change', function() {
-                            if (this.value) {
-                                continueBtn.disabled = false;
-                                continueBtn.style.opacity = '1';
-                            } else {
-                                continueBtn.disabled = true;
-                                continueBtn.style.opacity = '0.5';
-                            }
-                        });
-                    }
+                    setupDateInput();
                 }, 100);
             } else if (currentMode === 'fileUpload') {
                 // Update specialization display and go to file type selection
@@ -631,54 +731,88 @@
             }
         }
 
+        function setupDateInput() {
+            const dateInput = document.getElementById('attendanceDate');
+            const continueBtn = document.getElementById('continueBtn');
+
+            if (dateInput && continueBtn) {
+                // Remove existing event listeners
+                dateInput.removeEventListener('change', handleDateChange);
+                
+                // Set today as default date
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.value = today;
+                continueBtn.disabled = false;
+                continueBtn.style.opacity = '1';
+
+                // Add new event listener
+                dateInput.addEventListener('change', handleDateChange);
+            }
+        }
+
+        function handleDateChange() {
+            const continueBtn = document.getElementById('continueBtn');
+            if (this.value) {
+                continueBtn.disabled = false;
+                continueBtn.style.opacity = '1';
+            } else {
+                continueBtn.disabled = true;
+                continueBtn.style.opacity = '0.5';
+            }
+        }
+
         function goToDateSelection() {
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            const specializationText = getSpecializationText(selectedSpecialization);
             document.getElementById('selectedSpecializationDisplay').textContent = specializationText;
             showPage('dateSelectionPage');
+            setTimeout(() => {
+                setupDateInput();
+            }, 100);
         }
 
         function goToFieldSelectionFromDate() {
             const dateInput = document.getElementById('attendanceDate');
             const selectedDate = dateInput.value;
-            
+
             if (!selectedDate) {
                 alert('Iltimos, sanani tanlang!');
                 return;
             }
-            
+
             // Store selected date
             window.selectedAttendanceDate = selectedDate;
-            
+
             // Update displays
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            const specializationText = getSpecializationText(selectedSpecialization);
             document.getElementById('fieldPageSpecializationDisplay').textContent = specializationText;
             document.getElementById('fieldPageDateDisplay').textContent = selectedDate;
-            
+
             populateFields('fieldsContainer', 'goToAttendance');
             showPage('fieldSelectionPage');
         }
 
         function goToFieldSelection() {
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            const specializationText = getSpecializationText(selectedSpecialization);
             document.getElementById('fieldPageSpecializationDisplay').textContent = specializationText;
             document.getElementById('fieldPageDateDisplay').textContent = window.selectedAttendanceDate;
+            populateFields('fieldsContainer', 'goToAttendance');
             showPage('fieldSelectionPage');
         }
 
         function goToFileTypeSelection() {
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            const specializationText = getSpecializationText(selectedSpecialization);
             document.getElementById('fileTypeSpecializationDisplay').textContent = specializationText;
             showPage('fileTypeSelectionPage');
         }
 
         function goToFileFieldSelection(fileType) {
             selectedFileType = fileType;
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
-            
+            const specializationText = getSpecializationText(selectedSpecialization);
+
             // Update displays
             document.getElementById('fileFieldSpecializationDisplay').textContent = specializationText;
             document.getElementById('fileFieldTypeDisplay').textContent = fileType;
-            
+
             populateFields('fileFieldsContainer', 'goToFileUpload');
             showPage('fileFieldSelectionPage');
         }
@@ -686,8 +820,11 @@
         function populateFields(containerId, onClickFunction) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
-            
-            academyData.fields.forEach(field => {
+
+            // Get fields based on selected specialization
+            const currentFields = academyData[selectedSpecialization].fields;
+
+            currentFields.forEach(field => {
                 const button = document.createElement('button');
                 button.className = 'btn btn-small field-btn';
                 button.textContent = field;
@@ -698,35 +835,36 @@
 
         function goToAttendance(field) {
             selectedField = field;
-            
+
             // Update display information
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
+            const specializationText = getSpecializationText(selectedSpecialization);
             document.getElementById('attendanceSpecializationDisplay').textContent = specializationText;
             document.getElementById('selectedDateDisplay').textContent = window.selectedAttendanceDate;
             document.getElementById('selectedFieldDisplay').textContent = field;
-            
+
             populateStudents(field);
             showPage('attendancePage');
         }
 
         function goToFileUpload(field) {
             selectedField = field;
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
-            
+            const specializationText = getSpecializationText(selectedSpecialization);
+
             // Update displays
             document.getElementById('uploadSpecializationDisplay').textContent = specializationText;
             document.getElementById('selectedField').textContent = field;
             document.getElementById('selectedFileType').textContent = selectedFileType;
-            
+
             showPage('fileUploadPage');
         }
 
         function populateStudents(field) {
             const container = document.getElementById('studentsContainer');
             container.innerHTML = '';
-            
-            const students = academyData.students[field] || [];
-            
+
+            // Get students based on selected specialization and field
+            const students = academyData[selectedSpecialization].students[field] || [];
+
             students.forEach((student, index) => {
                 const studentDiv = document.createElement('div');
                 studentDiv.innerHTML = `
@@ -757,22 +895,22 @@
         function setAttendance(index, status, studentName) {
             const studentBtn = document.getElementById(`student-${index}`);
             const selector = document.getElementById(`selector-${index}`);
-            
+
             // Remove previous status classes
             studentBtn.classList.remove('present', 'absent', 'excused');
             // Add new status class
             studentBtn.classList.add(status);
-            
+
             // Store attendance data
             attendanceData[studentName] = status;
-            
+
             // Hide selector
             selector.classList.remove('active');
         }
 
         function saveAttendance() {
             const data = {
-                specialization: selectedSpecialization,
+                specialization: getBackendSpecialization(selectedSpecialization), // Send "first" or "second"
                 field: selectedField,
                 date: window.selectedAttendanceDate,
                 time: new Date().toLocaleTimeString(),
@@ -781,13 +919,12 @@
 
             // Simulate saving to Google Sheets
             console.log('Attendance data to save:', data);
-            
+
             // Here you would typically send this data to your Google Sheets API
-            // Example: sendToGoogleSheets(data);
-            
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
-            alert(`Davomat muvaffaqiyatli saqlandi!\n\nMutaxasislik: ${specializationText}\nSana: ${window.selectedAttendanceDate}\nYo'nalish: ${selectedField}\n\nMa'lumotlar Google Sheets ga yuborildi.`);
-            
+            sendToGoogleSheets(data);
+
+            alert(`Ma'lumotlar yuborilmoqda...`);
+
             // Reset for next use
             attendanceData = {};
             window.selectedAttendanceDate = '';
@@ -797,14 +934,14 @@
         function uploadFile() {
             const fileInput = document.getElementById('fileUpload');
             const file = fileInput.files[0];
-            
+
             if (!file) {
                 alert('Iltimos, faylni tanlang!');
                 return;
             }
 
             const data = {
-                specialization: selectedSpecialization,
+                specialization: getBackendSpecialization(selectedSpecialization), // Send "first" or "second"
                 fileName: file.name,
                 fileType: selectedFileType,
                 field: selectedField,
@@ -816,30 +953,36 @@
 
             // Simulate file upload and sending to Telegram group
             console.log('File data to upload:', data);
-            
+
             // Here you would typically:
             // 1. Upload file to your server/cloud storage
             // 2. Send notification with file info to Telegram group
-            // Example: sendFileToTelegramGroup(data);
-            
-            const specializationText = selectedSpecialization === 'first' ? 'Bakalavr' : 'Magistr';
-            alert(`Fayl muvaffaqiyatli yuborildi!\n\nMutaxasislik: ${specializationText}\nFayl: ${file.name}\nTur: ${selectedFileType}\nYo'nalish: ${selectedField}\n\nFayl guruhga yuborildi.`);
-            
+            sendFileToTelegramGroup(data);
+
+            alert(`Fayl yuborilmoqda...`);
+
             // Reset form
             fileInput.value = '';
             document.getElementById('fileInfo').style.display = 'none';
             goToMain();
         }
 
+        function clearEventListeners() {
+            const dateInput = document.getElementById('attendanceDate');
+            if (dateInput) {
+                dateInput.removeEventListener('change', handleDateChange);
+            }
+        }
+
         // File input change handler
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const fileInput = document.getElementById('fileUpload');
             const fileInfo = document.getElementById('fileInfo');
             const fileName = document.getElementById('fileName');
 
             // File input handler
             if (fileInput) {
-                fileInput.addEventListener('change', function() {
+                fileInput.addEventListener('change', function () {
                     if (this.files[0]) {
                         fileName.textContent = this.files[0].name;
                         fileInfo.style.display = 'block';
@@ -850,37 +993,69 @@
             }
         });
 
-        // Google Sheets integration function (you need to implement this)
-        function sendToGoogleSheets(data) {
-            // Example implementation:
-            // const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
-            // fetch(scriptURL, {
-            //     method: 'POST',
-            //     body: JSON.stringify(data),
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // })
-            // .then(response => response.json())
-            // .then(result => console.log('Success:', result))
-            // .catch(error => console.error('Error:', error));
-        }
+        // Flask backend API URL
+        const BACKEND_URL = "http://127.0.0.1:8000/api/attendance";
+        // agar lokal ishlatayotgan bo'lsangiz: "http://127.0.0.1:5000/submit-attendance"
 
-        // Telegram Bot API integration function (you need to implement this)
+        // Google Sheets integration function
+        function sendToGoogleSheets(data) {
+            fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("✅ Success:", result);
+                    alert("Davomat muvaffaqiyatli yuborildi!");
+                })
+                .catch(error => {
+                    console.error("❌ Error:", error);
+                    alert("Xatolik yuz berdi, qayta urinib ko'ring!");
+                });
+        }
+        // Flask backend API URL
+        const FILE_BACKEND_URL = "http://127.0.0.1:8000/api/upload";
+        // agar lokal bo'lsa: "http://127.0.0.1:8000/api/upload"
+
+        // Telegram Bot API integration function
         function sendFileToTelegramGroup(data) {
-            // Example implementation with specialization info:
-            // const botToken = 'YOUR_BOT_TOKEN';
-            // const chatId = 'YOUR_GROUP_CHAT_ID';
-            // const formData = new FormData();
-            // formData.append('document', data.file);
-            // const specializationText = data.specialization === 'first' ? 'Bakalavr' : 'Magistr';
-            // formData.append('caption', `📁 Yangi fayl yuklandi:\n\n👤 Yuboruvchi: ${data.username}\n🎓 Mutaxasislik: ${specializationText}\n📝 Tur: ${data.fileType}\n🎯 Yo'nalish: ${data.field}\n📅 Sana: ${data.date} ${data.time}`);
-            
-            // fetch(`https://api.telegram.org/bot${botToken}/sendDocument?chat_id=${chatId}`, {
-            //     method: 'POST',
-            //     body: formData
-            // });
+            const formData = new FormData();
+            formData.append('file', data.file); // faylning o'zi
+            formData.append('username', data.username);
+            formData.append('fileType', data.fileType);
+            formData.append('field', data.field);
+            formData.append('specialization', data.specialization); // "first" or "second"
+            formData.append('date', data.date);
+            formData.append('time', data.time);
+
+            fetch(FILE_BACKEND_URL, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("File upload failed");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("✅ File sent successfully:", result);
+                    alert("Fayl muvaffaqiyatli yuborildi!");
+                })
+                .catch(error => {
+                    console.error("❌ Error:", error);
+                    alert("Fayl yuborishda xatolik yuz berdi, qayta urinib ko'ring!");
+                });
         }
     </script>
 </body>
+
 </html>

@@ -1,18 +1,36 @@
 {
   "1-bosqich": {
-    "chat_id": -1001234567890,
+    "chat_id": -1002965286134,
     "topics": {
-      "Iqtisodiyot": 101,
-      "Huquqshunoslik": 102,
-      "Kompyuter fanlari": 103
+      "Islomshunoslik": 1,
+      "Dinshunoslik": 3,
+      "Psixologiya": 9,
+      "Turizm": 19,
+      "Axborot xavfsizligi": 20,
+      "Islom huquqi": 8,
+      "Tashqi Iqtisod": 17,
+      "Iqtisodiyot": 11,
+      "Xalqaro munosabatlar": 4,
+      "Matnshunoslik": 7,
+      "Lingvistika": 21,
+      "Tarix": 15
     }
   },
   "2-bosqich": {
-    "chat_id": -1009876543210,
+    "chat_id": -1002446713561,
     "topics": {
-      "Iqtisodiyot": 201,
-      "Huquqshunoslik": 202,
-      "Kompyuter fanlari": 203
+      "Islomshunoslik": 23,
+      "Dinshunoslik": 25,
+      "Psixologiya": 30,
+      "Turizm": 35,
+      "Axborot xavfsizligi": 34,
+      "Islom huquqi": 33,
+      "Tashqi iqtisod": 32,
+      "Iqtisodiyot": 31,
+      "Xalqaro munosabatlar": 29,
+      "Matnshunoslik": 28,
+      "Lingvistika": 27,
+      "Tarix": 26
     }
   }
 }
